@@ -20,7 +20,7 @@ datos = pd.read_csv('baseball_reference_2016_scrape.csv')
 
 
 X = datos.iloc[:, :].values
-y = datos.iloc[:, 1].values
+y = datos.iloc[:, :1].values
 
 print("\nDatos head")
 print(datos.head())
@@ -44,6 +44,10 @@ for x in range(len(X[:, 0])):
     string_temp = string_temp.replace(",", "")
     int_temp = int(string_temp)
     X[:, 0][x] = int_temp
+
+
+print("\nprint(X[:, 0])")
+print(X[:, 0])
 
 
 print("\nprint(X[:, 0])")
@@ -90,6 +94,21 @@ print("\nprint(X[:, 6])")
 print(X[:, 6])
 
 
-# for x in range(17):
-#     print("\nX[:, %d]"%x)
-#     print(X[:, x])
+for x in range(17):
+    print("\nX[:, %d]"%x)
+    print(X[:, x])
+
+# Fixed y
+
+for x in range(len(y)):
+    string_temp = y[x][0][:-2].replace(",", "")
+    int_temp = int(string_temp)
+    y[x][0] = int_temp
+    # print(y[x][0])
+    
+print(y)
+    
+
+# normalización de datos ------
+
+
