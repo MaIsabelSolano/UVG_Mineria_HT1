@@ -79,4 +79,17 @@ for x in range(len(X[:, 15])):
 print("\nprint(X[:, 15])")
 print(X[:, 15])
 
-print(X)
+
+# date: formattiog
+
+for x in range(len(X[:, 6])):
+    date_temp = pd.to_datetime(X[:, 6][x], format="%A, %B %d, %Y")
+    X[:, 6][x] = date_temp
+
+print("\nprint(X[:, 6])")
+print(X[:, 6])
+
+
+# for x in range(17):
+#     print("\nX[:, %d]"%x)
+#     print(X[:, x])
