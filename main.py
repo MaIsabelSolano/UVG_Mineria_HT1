@@ -11,13 +11,30 @@
 import numpy as np
 import matplotlib as plt
 import pandas as pd
+from pandas_profiling import ProfileReport
+import matplotlib.pyplot as plt
+import seaborn as sns
 
+from quickda.explore_data import *
+from quickda.clean_data import *
+from quickda.explore_numeric import *
+from quickda.explore_categoric import *
+from quickda.explore_numeric_categoric import *
+from quickda.explore_time_series import *
 
 # importar el conjunto de datos
 datos = pd.read_csv('baseball_reference_2016_scrape.csv')
 
 # arreglar columnas antes de guardar los datos
+columns_to_drop = ["boxscore_url", "field_type"]
+datos = clean(datos, method = 'dropcols', columns = columns_to_drop)
 
+datos = clean(datos, method = "standardize")
+datos = clean(datos, method = "duplicates")
+datos = clean(datos, method = "replaceval", columns = [], to_replace = "",  value = np.nan)
+datos = clean(datos, method = "fillmissing")
+datos = clean(datos, method = "dropmissing")
+datos = clean(datos, method = "outliers", columns=[])
 
 X = datos.iloc[:, :].values
 y = datos.iloc[:, :1].values
@@ -36,7 +53,6 @@ print(X[:, 0])
 
 # limpieza columna por columna -------
 
-
 # Attendance: remove "']" at the end
 
 for x in range(len(X[:, 0])):
@@ -52,9 +68,9 @@ for x in range(len(X[:, 0])):
 
 # game duration: remove ": " at the beginning
 
-for x in range(len(X[:, 8])):
-    string_temp = X[:, 8][x].replace(": ", "")
-    X[:, 8][x] = string_temp
+for x in range(len(X[:, 6])):
+    string_temp = X[:, 6][x].replace(": ", "")
+    X[:, 6][x] = string_temp
 
 # print("\nprint(X[:, 8])")
 # print(X[:, 8])
@@ -62,9 +78,9 @@ for x in range(len(X[:, 8])):
 
 # Venue: remove ":" at the beginning
 
-for x in range(len(X[:, 16])):
-    string_temp = X[:, 16][x].replace(": ", "")
-    X[:, 16][x] = string_temp
+for x in range(len(X[:, 13])):
+    string_temp = X[:, 13][x].replace(": ", "")
+    X[:, 13][x] = string_temp
 
 # print("\nprint(X[:, 16])")
 # print(X[:, 16])
@@ -72,9 +88,9 @@ for x in range(len(X[:, 16])):
 
 # start_time: remove unnecesary text
 
-for x in range(len(X[:, 15])):
-    string_temp = X[:, 15][x].replace("Start Time: ", "").replace(" Local", "")
-    X[:, 15][x] = string_temp
+for x in range(len(X[:, 12])):
+    string_temp = X[:, 12][x].replace("Start Time: ", "").replace(" Local", "")
+    X[:, 12][x] = string_temp
 
 # print("\nprint(X[:, 15])")
 # print(X[:, 15])
@@ -82,15 +98,14 @@ for x in range(len(X[:, 15])):
 
 # date: formattiog
 
-for x in range(len(X[:, 6])):
-    date_temp = pd.to_datetime(X[:, 6][x], format="%A, %B %d, %Y")
-    X[:, 6][x] = date_temp
+for x in range(len(X[:, 5])):
+    date_temp = pd.to_datetime(X[:, 5][x], format="%A, %B %d, %Y")
+    X[:, 5][x] = date_temp
 
 # print("\nprint(X[:, 6])")
 # print(X[:, 6])
 
-
-for x in range(17):
+for x in range(14):
     print("\nX[:, %d]"%x)
     print(X[:, x])
 
@@ -104,52 +119,6 @@ for x in range(len(y)):
     
 print(y)
     
-
-# Gj — Today at 3:33 PM
-# import re
-
-# def extract_weather(other_info_string):
-#     weather_regex = re.compile(r"Start Time Weather:.")
-#     weather = weather_regex.search(other_info_string)
-#     if weather:
-#         return weather.group().split(":")[1].strip()
-#     return None
-
-# partidos["start_time_weather"] = partidos["other_info_string"].apply(extract_weather)
-# partidos['start_time_weather'] = partidos['other_info_string'].str.extract(r'Start Time Weather:.(\d+&deg; F.*)')
-# partidos['start_time_weather'] = partidos['start_time_weather'].str.replace(r'</strong>', '')
-# partidos['start_time_weather'] = partidos['start_time_weather'].str.replace(r'</div>', '')
-
-import re 
-
-
-
-# Manejo y codificación de datos categóricos
-# def codif_y_ligar(dataframe_original, variables_a_codificar):
-#     dummies = pd.get_dummies(dataframe_original[[variables_a_codificar]])
-#     res = pd.concat([dataframe_original, dummies], axis = 1)
-#     res = res.drop([variables_a_codificar], axis = 1)
-#     return res
-
-# variables_a_codificar = 1 
-# for variable in X[:, variables_a_codificar]:
-#     X = codif_y_ligar(X, variable)
-
-#print(X)    
-
-# def codif_y_ligar(dataframe_original, variable):
-#     dummies = pd.get_dummies(dataframe_original[variable])
-#     # res = pd.concat([dataframe_original, dummies], axis = 1)
-#     res = np.concatenate([dataframe_original, dummies], axis = 1)
-#     # res = res.drop([variable], axis = 1)
-#     res = np.delete(res, variable, axis = 1)
-#     return res
-
-# for v in range(len(X[:, 1])):
-#     X = codif_y_ligar(X, v)
-
-
-
 # división de los datos ----
 
 from sklearn.model_selection import train_test_split
