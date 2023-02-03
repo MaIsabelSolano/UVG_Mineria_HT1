@@ -20,7 +20,7 @@ datos = pd.read_csv('baseball_reference_2016_scrape.csv')
 
 
 X = datos.iloc[:, :].values
-y = datos.iloc[:, -1].values
+y = datos.iloc[:, 1].values
 
 print("\nDatos head")
 print(datos.head())
@@ -68,7 +68,15 @@ for x in range(len(X[:, 16])):
 
 print("\nprint(X[:, 16])")
 print(X[:, 16])
-# for x in range(16):
-#     print(X[:, x])
 
-# print(X)
+
+# start_time: remove unnecesary text
+
+for x in range(len(X[:, 15])):
+    string_temp = X[:, 15][x].replace("Start Time: ", "").replace(" Local", "")
+    X[:, 15][x] = string_temp
+
+print("\nprint(X[:, 15])")
+print(X[:, 15])
+
+print(X)
