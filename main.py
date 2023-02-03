@@ -46,12 +46,8 @@ for x in range(len(X[:, 0])):
     X[:, 0][x] = int_temp
 
 
-print("\nprint(X[:, 0])")
-print(X[:, 0])
-
-
-print("\nprint(X[:, 0])")
-print(X[:, 0])
+# print("\nprint(X[:, 0])")
+# print(X[:, 0])
 
 
 # game duration: remove ": " at the beginning
@@ -60,8 +56,8 @@ for x in range(len(X[:, 8])):
     string_temp = X[:, 8][x].replace(": ", "")
     X[:, 8][x] = string_temp
 
-print("\nprint(X[:, 8])")
-print(X[:, 8])
+# print("\nprint(X[:, 8])")
+# print(X[:, 8])
 
 
 # Venue: remove ":" at the beginning
@@ -70,8 +66,8 @@ for x in range(len(X[:, 16])):
     string_temp = X[:, 16][x].replace(": ", "")
     X[:, 16][x] = string_temp
 
-print("\nprint(X[:, 16])")
-print(X[:, 16])
+# print("\nprint(X[:, 16])")
+# print(X[:, 16])
 
 
 # start_time: remove unnecesary text
@@ -80,8 +76,8 @@ for x in range(len(X[:, 15])):
     string_temp = X[:, 15][x].replace("Start Time: ", "").replace(" Local", "")
     X[:, 15][x] = string_temp
 
-print("\nprint(X[:, 15])")
-print(X[:, 15])
+# print("\nprint(X[:, 15])")
+# print(X[:, 15])
 
 
 # date: formattiog
@@ -90,8 +86,8 @@ for x in range(len(X[:, 6])):
     date_temp = pd.to_datetime(X[:, 6][x], format="%A, %B %d, %Y")
     X[:, 6][x] = date_temp
 
-print("\nprint(X[:, 6])")
-print(X[:, 6])
+# print("\nprint(X[:, 6])")
+# print(X[:, 6])
 
 
 for x in range(17):
@@ -109,6 +105,15 @@ for x in range(len(y)):
 print(y)
     
 
-# normalización de datos ------
+# división de los datos ----
 
+from sklearn.model_selection import train_test_split
+seed = 0 # puede ser aleatoria
+X_entreno, X_prueba, y_entreno, y_prueba = train_test_split(X, y, test_size = 1/3, random_state = seed)
+
+
+# Entrenamiento del modelo de regresión lineal simple
+from sklearn.linear_model import LinearRegression
+regresor = LinearRegression()
+# regresor.fit(X_entreno, y_entreno)
 
