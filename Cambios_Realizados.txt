@@ -4,8 +4,10 @@ Cambios directos en la información fuente
 - Eliminación de fila 1725 : Parte de la información estaba en el orden incorrecto.
 - Eliminación de fila 1912 : Parte de la información estaba en el orden incorrecto.
 
+- Eliminación de columna H: field_type ya que todo estaba vacío
 
 Cambios realizados a los datos con pandas
 
 - Columna attendance arreglada para mostrar ints en vez de <string>']
+
 

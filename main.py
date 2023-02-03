@@ -19,7 +19,7 @@ datos = pd.read_csv('baseball_reference_2016_scrape.csv')
 # arreglar columnas antes de guardar los datos
 
 
-X = datos.iloc[:, :-1].values
+X = datos.iloc[:, :].values
 y = datos.iloc[:, -1].values
 
 print("\nDatos head")
@@ -31,12 +31,14 @@ print("\nX")
 print("\ny")
 print(y)
 
-print("\ndatos.ilos[:, 0]")
-print(datos.iloc[:, 0])
+print("\ndatos.iloc[:, 0]")
+print(X[:, 0])
 
 # limpieza columna por columna -------
 
+
 # Attendance: remove "']" at the end
+
 for x in range(len(X[:, 0])):
     string_temp = X[:, 0][x][:-2]
     string_temp = string_temp.replace(",", "")
@@ -44,17 +46,29 @@ for x in range(len(X[:, 0])):
     X[:, 0][x] = int_temp
 
 
-
 print("\nprint(X[:, 0])")
 print(X[:, 0])
 
+
+# game duration: remove ": " at the beginning
+
+for x in range(len(X[:, 8])):
+    string_temp = X[:, 8][x].replace(": ", "")
+    X[:, 8][x] = string_temp
+
+print("\nprint(X[:, 8])")
+print(X[:, 8])
+
+
 # Venue: remove ":" at the beginning
 
-# for x in range(len(X[:, 16])):
-#     string_temp = X[:, 16][x].replace(": ", "")
-#     X[:, 16][x] = string_temp
+for x in range(len(X[:, 16])):
+    string_temp = X[:, 16][x].replace(": ", "")
+    X[:, 16][x] = string_temp
 
 print("\nprint(X[:, 16])")
-print(X[:, 13])
+print(X[:, 16])
+# for x in range(16):
+#     print(X[:, x])
 
 # print(X)
