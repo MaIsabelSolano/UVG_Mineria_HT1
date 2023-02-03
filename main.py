@@ -105,6 +105,51 @@ for x in range(len(y)):
 print(y)
     
 
+# Gj — Today at 3:33 PM
+# import re
+
+# def extract_weather(other_info_string):
+#     weather_regex = re.compile(r"Start Time Weather:.")
+#     weather = weather_regex.search(other_info_string)
+#     if weather:
+#         return weather.group().split(":")[1].strip()
+#     return None
+
+# partidos["start_time_weather"] = partidos["other_info_string"].apply(extract_weather)
+# partidos['start_time_weather'] = partidos['other_info_string'].str.extract(r'Start Time Weather:.(\d+&deg; F.*)')
+# partidos['start_time_weather'] = partidos['start_time_weather'].str.replace(r'</strong>', '')
+# partidos['start_time_weather'] = partidos['start_time_weather'].str.replace(r'</div>', '')
+
+import re 
+
+
+
+# Manejo y codificación de datos categóricos
+# def codif_y_ligar(dataframe_original, variables_a_codificar):
+#     dummies = pd.get_dummies(dataframe_original[[variables_a_codificar]])
+#     res = pd.concat([dataframe_original, dummies], axis = 1)
+#     res = res.drop([variables_a_codificar], axis = 1)
+#     return res
+
+# variables_a_codificar = 1 
+# for variable in X[:, variables_a_codificar]:
+#     X = codif_y_ligar(X, variable)
+
+#print(X)    
+
+# def codif_y_ligar(dataframe_original, variable):
+#     dummies = pd.get_dummies(dataframe_original[variable])
+#     # res = pd.concat([dataframe_original, dummies], axis = 1)
+#     res = np.concatenate([dataframe_original, dummies], axis = 1)
+#     # res = res.drop([variable], axis = 1)
+#     res = np.delete(res, variable, axis = 1)
+#     return res
+
+# for v in range(len(X[:, 1])):
+#     X = codif_y_ligar(X, v)
+
+
+
 # división de los datos ----
 
 from sklearn.model_selection import train_test_split
