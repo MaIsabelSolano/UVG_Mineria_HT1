@@ -45,7 +45,7 @@ datos = datos[datos["attendance"].str.contains("U.S. Cellular Field") == False]
 datos = datos[datos["game_duration"].str.contains("Day Game, on grass") == False]
 
 X = datos.iloc[:, 1:]
-y = datos.iloc[:, :1]
+y = datos.iloc[:, :1].values
 
 print("\nDatos head")
 # print(datos.head())
@@ -67,74 +67,73 @@ print(y)
 # game duration: remove ": " at the beginning
 
 
-    
 X['game_duration'] = X['game_duration'].str.replace(": ", "")
 
 
 # Venue: remove ":" at the beginning
 
-X['venue'] = X['venue'].replace(": ", "")
+X['venue'] = X['venue'].str.replace(": ", "")
 
 
-# # start_time: remove unnecesary text
+# # start_time: remove unnecesary text 
 
-# for x in range(len(X[:, 11])):
-#     string_temp = X[:, 11][x].replace("Start Time: ", "").replace(" Local", "")
-#     X[:, 11][x] = string_temp
+X['start_time'] = X['start_time'].str.replace("Start Time: ", "")
+X['start_time'] = X['start_time'].str.replace(" Local", "")
 
 
 # # date: formatting
 
-# for x in range(len(X[:, 4])):
-#     date_temp = pd.to_datetime(X[:, 4][x], format="%A, %B %d, %Y")
-#     X[:, 4][x] = date_temp
-
+# X['date'] = X['date'].replace(X['date'] , pd.to_datetime(X['date'], format="%A, %B %d, %Y"))  
 
 # # Impresión de la información de todas las columnas una por una. 
 
-# for x in range(13):
-#     print("\nX[:, %d]"%x)
-#     print(X[:, x])
+for x in X:
+    # print("\nX[:, %d]"%x)
+    # print(X[:, x])
+    print(X[x])
 
 # # Fixed y
 
-# for x in range(len(y)):
-#     string_temp = y[x][0][:-2].replace(",", "")
-#     int_temp = int(string_temp)
-#     y[x][0] = int_temp
-#     # print(y[x][0])
+for x in range(len(y)):
+    string_temp = y[x][0][:-2].replace(",", "")
+    int_temp = int(string_temp)
+    y[x][0] = int_temp
     
-# print("fixed y")
-# print(y)
+print("fixed y")
+print(y)
 
 
 # # Codificación de los datos -------
-# from sklearn.compose import ColumnTransformer
-# from sklearn.preprocessing import OneHotEncoder
-# transfCol = ColumnTransformer(transformers = [('encoder', OneHotEncoder(), [0])], remainder = 'passthrough')
-# X = np.array(transfCol.fit_transform(X))
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder
+transfCol = ColumnTransformer(transformers = [('encoder', OneHotEncoder(), [0])], remainder = 'passthrough')
+X = np.array(transfCol.fit_transform(X))
 
-# # print(X)
+# print(X)
 
-# # def codif_y_ligar(dataframe_original, variables_a_codificar):
-# #     dummies = pd.get_dummies(dataframe_original[[variables_a_codificar]])
-# #     res = pd.concat([dataframe_original, dummies], axis = 1)
-# #     res = res.drop([variables_a_codificar], axis = 1)
-# #     return(res) 
+def codif_y_ligar(dataframe_original, variables_a_codificar):
+    dummies = pd.get_dummies(dataframe_original[[variables_a_codificar]])
+    res = pd.concat([dataframe_original, dummies], axis = 1)
+    res = res.drop([variables_a_codificar], axis = 1)
+    return(res) 
 
-# # variables_a_codificar = ['aya']   #  Esta es una lista de variables
-# # for variable in variables_a_codificar:
-# #     X = codif_y_ligar(X, variable)
+# variables_a_codificar = [
+#     'date',
+#     # 'game_duration', 'game_type', 'home_team', 
+#     # 'start_time', 'venue'
+#     ]   #  Esta es una lista de variables
+# for variable in variables_a_codificar:
+#     X = codif_y_ligar(X, variable)
 
     
-# # # división de los datos ----
+# división de los datos ----
 
-# # from sklearn.model_selection import train_test_split
-# # seed = 0 # puede ser aleatoria
-# # X_entreno, X_prueba, y_entreno, y_prueba = train_test_split(X, y, test_size = 1/3, random_state = seed)
+from sklearn.model_selection import train_test_split
+seed = 0 # puede ser aleatoria
+X_entreno, X_prueba, y_entreno, y_prueba = train_test_split(X, y, test_size = 1/3, random_state = seed)
 
 
-# # # Entrenamiento del modelo de regresión lineal simple
-# # from sklearn.linear_model import LinearRegression
-# # regresor = LinearRegression()
-# # # regresor.fit(X_entreno, y_entreno)
+# Entrenamiento del modelo de regresión lineal simple
+from sklearn.linear_model import LinearRegression
+regresor = LinearRegression()
+# regresor.fit(X_entreno, y_entreno)
