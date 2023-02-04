@@ -40,7 +40,9 @@ X = datos.iloc[:, :].values
 y = datos.iloc[:, :1].values
 
 print("\nDatos head")
-print(datos.head())
+# print(datos.head())
+
+print(X)
 
 print("\nX")
 # print(X)
@@ -51,7 +53,28 @@ print(y)
 print("\ndatos.iloc[:, 0]")
 print(X[:, 0])
 
-# limpieza columna por columna -------
+# # limpieza columna por columna -------
+
+# # other_info_string: fix formatting
+# import re
+
+# def get_weather(input):
+#     w_regex = re.compile(r"Start Time Weather:.")
+#     w = w_regex.search(input)
+#     if w:
+#         return w.group().split(":")[1].strip()
+#     return None
+
+
+# i = int(X.column.get_loc('other_info_string'))
+# print(i, type(i))
+# for x in range(len(X[:, 12])):
+#     string_temp = X[:, 12][x].replace('<!--  \n    <div class="section_content" id="div_6350237457">\n<div><strong>Umpires:</strong>', '').replace('</div>\n\n    </div>\n\n-->', '')
+#     # string_temp = X[:, i][x]
+    
+    
+# print("\nX['other_info_string']")
+# print(X['other_info_string'])
 
 # Attendance: remove "']" at the end
 
@@ -62,18 +85,11 @@ for x in range(len(X[:, 0])):
     X[:, 0][x] = int_temp
 
 
-# print("\nprint(X[:, 0])")
-# print(X[:, 0])
-
-
 # game duration: remove ": " at the beginning
 
 for x in range(len(X[:, 6])):
     string_temp = X[:, 6][x].replace(": ", "")
     X[:, 6][x] = string_temp
-
-# print("\nprint(X[:, 8])")
-# print(X[:, 8])
 
 
 # Venue: remove ":" at the beginning
@@ -82,9 +98,6 @@ for x in range(len(X[:, 13])):
     string_temp = X[:, 13][x].replace(": ", "")
     X[:, 13][x] = string_temp
 
-# print("\nprint(X[:, 16])")
-# print(X[:, 16])
-
 
 # start_time: remove unnecesary text
 
@@ -92,18 +105,15 @@ for x in range(len(X[:, 12])):
     string_temp = X[:, 12][x].replace("Start Time: ", "").replace(" Local", "")
     X[:, 12][x] = string_temp
 
-# print("\nprint(X[:, 15])")
-# print(X[:, 15])
 
-
-# date: formattiog
+# date: formatting
 
 for x in range(len(X[:, 5])):
     date_temp = pd.to_datetime(X[:, 5][x], format="%A, %B %d, %Y")
     X[:, 5][x] = date_temp
 
-# print("\nprint(X[:, 6])")
-# print(X[:, 6])
+
+# Impresión de la información de todas las columnas una por una. 
 
 for x in range(14):
     print("\nX[:, %d]"%x)
@@ -118,16 +128,35 @@ for x in range(len(y)):
     # print(y[x][0])
     
 print(y)
+
+
+# # Codificación de los datos -------
+# from sklearn.compose import ColumnTransformer
+# from sklearn.preprocessing import OneHotEncoder
+# transfCol = ColumnTransformer(transformers = [('encoder', OneHotEncoder(), [0])], remainder = 'passthrough')
+# X = np.array(transfCol.fit_transform(X))
+
+# print(X)
+
+def codif_y_ligar(dataframe_original, variables_a_codificar):
+    dummies = pd.get_dummies(dataframe_original[[variables_a_codificar]])
+    res = pd.concat([dataframe_original, dummies], axis = 1)
+    res = res.drop([variables_a_codificar], axis = 1)
+    return(res) 
+
+variables_a_codificar = ['aya']   #  Esta es una lista de variables
+for variable in variables_a_codificar:
+    X = codif_y_ligar(X, variable)
+
     
-# división de los datos ----
+# # división de los datos ----
 
-from sklearn.model_selection import train_test_split
-seed = 0 # puede ser aleatoria
-X_entreno, X_prueba, y_entreno, y_prueba = train_test_split(X, y, test_size = 1/3, random_state = seed)
+# from sklearn.model_selection import train_test_split
+# seed = 0 # puede ser aleatoria
+# X_entreno, X_prueba, y_entreno, y_prueba = train_test_split(X, y, test_size = 1/3, random_state = seed)
 
 
-# Entrenamiento del modelo de regresión lineal simple
-from sklearn.linear_model import LinearRegression
-regresor = LinearRegression()
-# regresor.fit(X_entreno, y_entreno)
-
+# # Entrenamiento del modelo de regresión lineal simple
+# from sklearn.linear_model import LinearRegression
+# regresor = LinearRegression()
+# # regresor.fit(X_entreno, y_entreno)
